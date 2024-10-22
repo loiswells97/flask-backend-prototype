@@ -1,9 +1,11 @@
-FROM ubuntu
+FROM python:3
 
-RUN apt update
-RUN apt install python3-pip -y
-RUN pip3 install flask
-
-WORKDIR /app
+ENV VIRTUAL_ENV=/opt/venv
+RUN python -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY . .
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
 CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
